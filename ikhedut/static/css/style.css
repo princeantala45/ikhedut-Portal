@@ -29,6 +29,77 @@ html{
     /* background-color: #0b5e2a; */
     /* color: #fff; */
 }
+/* =======================nav=bar====================== */
+.nav-link {
+  position: relative;
+  padding: 0.55rem 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 0.5rem;
+  transition: 
+    color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+/* Hover */
+.nav-link:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Underline (hidden by default) */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+}
+
+/* Show underline on hover */
+.nav-link:hover::after {
+  width: 60%;
+}
+
+/* Active state */
+.nav-link.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Mobile behavior */
+@media (max-width: 640px) {
+  .nav-link {
+    border-radius: 0.4rem;
+  }
+
+  .nav-link::after {
+ content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+  }
+
+  .nav-link.active {
+    color: #166534;
+    font-weight: 600;
+  }
+}
+
 /* -------------------------up-errow--------------------------- */
 
 .up-errow{

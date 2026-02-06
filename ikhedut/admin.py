@@ -1,16 +1,33 @@
+from operator import index
 from django.contrib import admin
+from adminsortable2.admin import SortableAdminMixin
 from ikhedut.models import (
     Contact,
     Signup,
     Ad,
     CropSale,
     Order,
-    OrderItem
+    OrderItem,
+    Slider,
+    Slider2,
+    Slider_content,
+    Navbar
 )
+from ikhedut.models.index import QuickLink, SupportedCompany
 
 admin.site.register(Contact)
 admin.site.register(Signup)
 
+@admin.register(Navbar)
+class NavbarAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ("page_name", "page_url", "order")
+
+@admin.register(Slider_content)
+class Slider_content_admin(admin.ModelAdmin):
+    
+    def has_add_permission(self, request):
+        return False
+    
 @admin.register(CropSale)
 class CropSaleAdmin(admin.ModelAdmin):
     list_display = ("crop", "seller", "quantity", "price", "is_approved")
@@ -113,3 +130,23 @@ class OrderAdmin(admin.ModelAdmin):
     approve_cancellation.short_description = (
         "Approve selected cancellation requests"
     )
+
+@admin.register(Slider)
+class SliderAdmin(admin.ModelAdmin):
+    list_display = ("id", "image", "is_active")
+    list_editable = ("is_active",)
+
+@admin.register(Slider2)
+class Slider2Admin(admin.ModelAdmin):
+    list_display = ("id", "image", "is_active")
+    list_editable = ("is_active",)
+
+@admin.register(SupportedCompany)
+class SupportedCompanyAdmin(SortableAdminMixin,admin.ModelAdmin):
+    list_display = ("company_image", "is_active","company_order")
+    list_editable = ("is_active",)
+    
+
+@admin.register(QuickLink)
+class QuicklinkAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ("q_page_name", "q_page_url", "q_order")

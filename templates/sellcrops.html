@@ -150,11 +150,15 @@ cropSelect.addEventListener("change", () => {
         priceInput.disabled = true;
     }
 });
-
 </script>
+
+
 <script>
 document.getElementById("sellForm").addEventListener("submit", async function (e) {
     e.preventDefault();
+
+    const form = this;
+    const submitBtn = form.querySelector('button[type="submit"]');
 
     let access = localStorage.getItem("access");
     let refresh = localStorage.getItem("refresh");
@@ -164,49 +168,81 @@ document.getElementById("sellForm").addEventListener("submit", async function (e
         return;
     }
 
-    const formData = new FormData(this);
+    submitBtn.disabled = true;
 
-    let response = await fetch("/generic-sellcrops/", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${access}`
-        },
-        body: formData
-    });
+    const formData = new FormData(form);
 
-    if (response.status === 401 && refresh) {
-        const refreshRes = await fetch("/api/token/refresh/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ refresh })
-        });
-
-        if (!refreshRes.ok) {
-            localStorage.clear();
-            window.location.href = "/login/";
-            return;
-        }
-
-        const refreshData = await refreshRes.json();
-        access = refreshData.access;
-        localStorage.setItem("access", access);
-
-        response = await fetch("/generic-sellcrops/", {
+    try {
+        let response = await fetch("/generic-sellcrops/", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${access}`
             },
             body: formData
         });
-    }
 
-    if (response.ok) {
-        alert("Crop submitted successfully, Please Wait for Admin Approval");
-        window.location.reload();
-    } else {
-        alert("Submission failed");
+        if (response.status === 401 && refresh) {
+            const refreshRes = await fetch("/api/token/refresh/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refresh })
+            });
+
+            if (!refreshRes.ok) {
+                localStorage.clear();
+                window.location.href = "/login/";
+                return;
+            }
+
+            const refreshData = await refreshRes.json();
+            access = refreshData.access;
+            localStorage.setItem("access", access);
+
+            response = await fetch("/generic-sellcrops/", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${access}`
+                },
+                body: formData
+            });
+        }
+
+        const data = await response.json();
+
+        if (response.ok) {
+            Swal.fire({
+                title: "Good job!",
+                text:
+                    data?.message ||
+                    "Advertisement submitted successfully. Waiting for admin approval. Check status on user profile",
+                icon: "success"
+            });
+            form.reset();
+        } else {
+            console.error("API error:", response.status, data);
+            Swal.fire({
+                title: "Submission failed",
+                text:
+                    data?.error ||
+                    data?.detail ||
+                    "Submission failed. Please check your inputs and try again.",
+                icon: "error"
+            });
+        }
+    } catch (error) {
+        console.error("Network error:", error);
+        Swal.fire({
+            title: "Network error",
+            text: "Please check your connection and try again.",
+            icon: "error"
+        });
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Advertisement";
     }
 });
+
+
 </script>
 
 

@@ -1,4 +1,6 @@
-from .models import *
+from ikhedut.admin import Slider2Admin
+from ikhedut.models.index import Slider_content
+from .models import *  # type: ignore[attr-defined]
 from django.db import transaction
 from rest_framework.views import APIView
 from django.shortcuts import redirect
@@ -25,13 +27,18 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import authentication_classes
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import login
-from .models import *
-from .serializer import *
+
+
 
 
 @login_required
 def postadvertisement(request):
-   return render(request,'postadvertisement.html')
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,'postadvertisement.html',context)
+
 class SellCropsGeneric(generics.ListAPIView,generics.CreateAPIView):
     queryset=CropSale.objects.all()
     serializer_class=Cropsaleserializers
@@ -74,7 +81,7 @@ class RegistrerUser(APIView):
 
         user = serializer.save()
 
-        refresh = RefreshToken.for_user(user)
+        refresh = RefreshToken.for_user(user)  # type: ignore[attr-defined]
 
         return Response(
             {
@@ -87,7 +94,11 @@ class RegistrerUser(APIView):
 
 
 def login_page(request):
-    return render(request, "login.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request, "login.html",context)
 
 
 @api_view(["POST"])
@@ -108,12 +119,16 @@ def login_api(request):
     return Response({
         "access": str(refresh.access_token),
         "refresh": str(refresh),
-        "username": user.username
+        "username": user.username  # type: ignore[attr-defined]
     })
     
 @login_required
 def sellcrops_page(request):
-    return render(request, "sellcrops.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request, "sellcrops.html",context)
 @permission_classes([IsAuthenticated])
 class ContactView(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
@@ -122,17 +137,32 @@ class ContactView(viewsets.ModelViewSet):
 
 @login_required
 def contact(request):
-    return render(request,"contact.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"contact.html",context)
     
 def index(request):
-    crops = CropSale.objects.filter(is_approved=True)
-    return render(request, "index.html", {"crops": crops})
+    context = {
+        "crops":CropSale.objects.filter(is_approved=True),
+        "sliders": Slider.objects.filter(is_active=True),
+        "sliders2": Slider2.objects.filter(is_active=True),
+        "slider_content": Slider_content.objects.first(),
+        "nav_items": Navbar.objects.all(),
+        "supported_companies": SupportedCompany.objects.filter(is_active=True),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request, "index.html", context)
+    
 
-def crops(request):
-    return render(request,"crops.html")
 
 def agricultureguidance(request):
-    return render(request,"agricultureguidance.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"agricultureguidance.html",context)
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -165,56 +195,98 @@ def cart(request):
     total = 0
 
     if cart:
-        items = cart.items.select_related("product")
+        items = cart.items.select_related("product") # type: ignore[attr-defined]
         total = sum(item.subtotal for item in items)
 
-    return render(request, "cart.html", {
+    context = {
         "items": items,
         "total": total,
-        "cart_created_at": cart.created_at if cart else None
-    })
+        "cart_created_at": cart.created_at if cart else None,
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+
+    return render(request, "cart.html", context)
+
 
 @login_required
 def checkout(request):
     cart = Cart.objects.filter(user=request.user, is_paid=False).first()
 
-    if not cart or not cart.items.exists():
+    if not cart or not cart.items.exists():  # type: ignore[attr-defined]
         messages.error(request, "Your cart is empty.")
         return redirect("cart")
 
-    items = cart.items.select_related("product")
+    items = cart.items.select_related("product") # type: ignore[attr-defined]
     total = sum(item.subtotal for item in items)
 
-    return render(request, "checkout.html", {
+    context = {
         "items": items,
         "total": total,
-    })
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+
+    return render(request, "checkout.html", context)
+
 
 @login_required
 def buycrops(request):
-    return render(request, "buycrops.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request, "buycrops.html",context)
 
 def tractor(request):
-    return render(request,"tractor.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"tractor.html",context)
 
 def tillage(request):
-    return render(request,"tillage.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"tillage.html",context)
 
 def ox(request):
-    return render(request,"ox.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"ox.html",context)
 
 def agrochemicals(request):
-    return render(request,"agrochemicals.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"agrochemicals.html",context)
 
 def fertilizer(request):
-    return render(request,"fertilizer.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"fertilizer.html",context)
 
 def signup(request):
-    return render(request,"signup.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"signup.html",context)
 
 def logout(request):
     auth_logout(request)
-    return render(request, "logout.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request, "logout.html",context)
 
 
 def remove_from_cart(request, item_id):
@@ -265,10 +337,15 @@ def postedadvertisement(request):
     else:
         ads = Ad.objects.filter(is_approved=True).order_by("-id")
 
-    return render(request, "postedadvertisement.html", {
+    context = {
         "ads": ads,
         "order": order,
-    })
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+
+    return render(request, "postedadvertisement.html", context)
+
 
 
 @require_POST
@@ -284,26 +361,32 @@ def delete_advertisement(request, id):
 
 
 def order_success(request):
-    return render(request, "order_success.html")
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request, "order_success.html",context)
 
 def spraypump(request):
-    return render(request,'spraypump.html')
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,'spraypump.html',context)
 
 @login_required
 def userprofile(request):
     user = request.user
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+        "profile" : Signup.objects.filter(user=user).first(),
+        "crop_sales" : CropSale.objects.filter(seller=user).order_by("-id"),
+        "orders" : Order.objects.filter(user=user).order_by("-created_at"),
+        "ads" : Ad.objects.filter(user=user).order_by("-id"),
+    }
 
-    profile = Signup.objects.filter(user=user).first()
-    crop_sales = CropSale.objects.filter(seller=user).order_by("-id")
-    orders = Order.objects.filter(user=user).order_by("-created_at")
-    ads = Ad.objects.filter(user=user).order_by("-id")
-
-    return render(request, "userprofile.html", {
-        "profile": profile,
-        "crop_sales": crop_sales,
-        "orders": orders,
-        "ads": ads,
-    })
+    return render(request, "userprofile.html",context)
  
 def cancel_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
@@ -402,7 +485,7 @@ def api_my_cart(request):
     if not cart:
         return Response([])
 
-    items = cart.items.select_related("product")
+    items = cart.items.select_related("product")  # type: ignore[attr-defined]
 
     data = []
     for item in items:
@@ -433,10 +516,10 @@ def checkout_api(request):
     print("AUTH HEADER:", request.headers.get("Authorization"))
     print("USER:", request.user)
     cart = Cart.objects.filter(user=request.user, is_paid=False).first()
-    if not cart or not cart.items.exists():
+    if not cart or not cart.items.exists():  # type: ignore[attr-defined]
         return Response({"error": "Cart is empty"}, status=400)
 
-    total = sum(item.subtotal for item in cart.items.all())
+    total = sum(item.subtotal for item in cart.items.all())  # type: ignore[attr-defined]
 
     serializer = OrderSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -444,10 +527,10 @@ def checkout_api(request):
     order = Order.objects.create(
         user=request.user,
         total_amount=total,
-        **serializer.validated_data
+        **serializer.validated_data  # type: ignore[attr-defined]
     )
 
-    for item in cart.items.all():
+    for item in cart.items.all():  # type: ignore[attr-defined]
         OrderItem.objects.create(
             order=order,
             product=item.product,
@@ -480,9 +563,9 @@ def api_my_orders(request):
     data = []
     for o in orders:
         data.append({
-            "id": o.id,
+            "id": o.id,  # type: ignore[attr-defined]
             "total": o.total_amount,
-            "status": o.get_status_display(),
+            "status": o.get_status_display(),   # type: ignore[attr-defined]
             "created_at": o.created_at.strftime("%d %b %Y"),
         })
 

@@ -31,26 +31,24 @@
     <div class="bg-gradient-to-r from-green-50 to-white rounded-2xl shadow p-6">
         <h2 class="text-2xl font-semibold mb-4 border-b pb-2">
             My Profile
-            
-        <div class="mt-6 flex flex-col sm:flex-row gap-3">
 
-    <a href="{% url 'password_change' %}"
-       class="inline-flex items-center gap-2 px-5 py-2.5
+            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+
+                <a href="{% url 'password_change' %}" class="inline-flex items-center gap-2 px-5 py-2.5
               rounded-lg border border-blue-200
               bg-blue-50 text-blue-700
               hover:bg-blue-100 transition
               font-medium text-sm">
-        🔒 Change Password
-    </a>
-    <a href="{% url 'password_reset' %}"
-       class="inline-flex items-center gap-2 px-5 py-2.5
+                    🔒 Change Password
+                </a>
+                <a href="{% url 'password_reset' %}" class="inline-flex items-center gap-2 px-5 py-2.5
               rounded-lg border border-blue-200
               bg-blue-50 text-blue-700
               hover:bg-blue-100 transition
               font-medium text-sm">
-        Forgot your password?
-    </a>
-</div>
+                    Forgot your password?
+                </a>
+            </div>
         </h2>
 
 
@@ -70,54 +68,50 @@
                 <p class="font-semibold text-lg">{{ profile.mobile }}</p>
             </div>
         </div>
-       <!-- Section Filter Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+        <!-- Section Filter Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
 
-    <button onclick="showSection('crops', this)"
-        class="tab-btn text-left p-4 rounded-xl bg-white shadow-sm border
+            <button onclick="showSection('crops', this)" class="tab-btn text-left p-4 rounded-xl bg-white shadow-sm border
                border-blue-200 hover:shadow-md transition
                flex items-center gap-4 bg-blue-50 text-blue-700">
-        <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100">
-            🌾
-        </div>
-        <div>
-            <p class="font-semibold">My Crop Sale Submissions</p>
-            <p class="text-sm text-gray-500">Your listed crops</p>
-        </div>
-    </button>
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100">
+                    🌾
+                </div>
+                <div>
+                    <p class="font-semibold">My Crop Sale Submissions</p>
+                    <p class="text-sm text-gray-500">Your listed crops</p>
+                </div>
+            </button>
 
-    <button onclick="showSection('orders', this)"
-        class="tab-btn text-left p-4 rounded-xl bg-white shadow-sm border
+            <button onclick="showSection('orders', this)" class="tab-btn text-left p-4 rounded-xl bg-white shadow-sm border
                border-gray-200 hover:shadow-md transition
                flex items-center gap-4 text-gray-700">
-        <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
-            🧾
-        </div>
-        <div>
-            <p class="font-semibold">My Orders</p>
-            <p class="text-sm text-gray-500">Purchases & delivery</p>
-        </div>
-    </button>
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+                    🧾
+                </div>
+                <div>
+                    <p class="font-semibold">My Orders</p>
+                    <p class="text-sm text-gray-500">Purchases & delivery</p>
+                </div>
+            </button>
 
-    <button onclick="showSection('ads', this)"
-        class="tab-btn text-left p-4 rounded-xl bg-white shadow-sm border
+            <button onclick="showSection('ads', this)" class="tab-btn text-left p-4 rounded-xl bg-white shadow-sm border
                border-gray-200 hover:shadow-md transition
                flex items-center gap-4 text-gray-700">
-        <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
-            📢
-        </div>
-        <div>
-            <p class="font-semibold">My Advertisements</p>
-            <p class="text-sm text-gray-500">Your posted ads</p>
-        </div>
-    </button>
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100">
+                    📢
+                </div>
+                <div>
+                    <p class="font-semibold">My Advertisements</p>
+                    <p class="text-sm text-gray-500">Your posted ads</p>
+                </div>
+            </button>
 
-</div>
+        </div>
 
     </div>
-    
-<div id="section-crops"
-     class="section bg-white rounded-2xl shadow-md p-4 sm:p-6
+
+    <div id="section-crops" class="section bg-white rounded-2xl shadow-md p-4 sm:p-6
      {% if not crop_sales %}hidden{% endif %}">
         <h2 class="text-xl sm:text-2xl font-semibold mb-6 border-b pb-2">
             My Crop Sale Submissions
@@ -162,8 +156,28 @@
                         </span>
                         {% endif %}
                     </div>
-                    <form action="{% url 'delete_crop' sale.id %}" method="POST"
-                        onsubmit="return confirm('Delete this crop submission?');">
+                    <form action="{% url 'delete_crop' sale.id %}" method="POST" onsubmit="
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Your file has been deleted.',
+          icon: 'success'
+        }).then(() => {
+          this.submit();
+        });
+      }
+    });
+    return false;
+  ">
                         {% csrf_token %}
                         <button type="submit" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
                             title="Delete">
@@ -185,8 +199,7 @@
         {% endif %}
     </div>
     <!-- ================= ORDERS ================= -->
-  <div id="section-orders"
-     class="section bg-white rounded-2xl shadow-md p-6
+    <div id="section-orders" class="section bg-white rounded-2xl shadow-md p-6
      {% if crop_sales %}hidden{% endif %}">
 
         <h2 class="text-2xl font-semibold mb-6 border-b pb-2">
@@ -201,7 +214,7 @@
 
                 <!-- Order Header -->
                 <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-                
+
                     <div>
                         <p class="text-sm text-gray-500">Placed On</p>
                         <p class="font-medium">
@@ -338,27 +351,19 @@
                         Pending
                         {% endif %}
                     </span>
-                     <form method="POST"
-              action="{% url 'delete_advertisement' ad.id %}"
-              onsubmit="return confirm('Delete this advertisement?');">
-            {% csrf_token %}
-            <button type="submit"
-                    class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
-                    title="Delete">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-5 w-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7
+                    <form method="POST" action="{% url 'delete_advertisement' ad.id %}"
+                        onsubmit="return confirm('Delete this advertisement?');">
+                        {% csrf_token %}
+                        <button type="submit" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
+                            title="Delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7
                              m5 4v6m4-6v6
                              m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-            </button>
-        </form>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
 
             </div>
@@ -437,7 +442,7 @@
         btn.classList.add('bg-blue-50', 'text-blue-600');
         btn.classList.remove('text-gray-600');
     }
-</script>   
+</script>
 
 
 {% endblock content %}

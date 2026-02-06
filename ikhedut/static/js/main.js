@@ -8,7 +8,24 @@
         }
     });
 
+// ==========================nav=bar-==========================
+  function setActiveNav() {
+    const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
 
+    document.querySelectorAll(".nav-link").forEach(link => {
+      const linkPath = link.getAttribute("href").replace(/\/$/, "") || "/";
+      link.classList.toggle("active", linkPath === currentPath);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", setActiveNav);
+
+  // Re-run when mobile menu is toggled
+  document.addEventListener("click", e => {
+    if (e.target.closest('[commandfor="mobile-menu"]')) {
+      setTimeout(setActiveNav, 50);
+    }
+  });
 document.addEventListener("DOMContentLoaded", () => {
   // ================== UP ARROW ==================
   const upArrow = document.querySelector(".up-errow");

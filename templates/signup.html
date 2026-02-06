@@ -116,33 +116,46 @@ document.getElementById("signupForm").addEventListener("submit", async function 
   }
 
   const formData = new FormData(this);
+try {
+  const response = await fetch("/api/register/", {
+    method: "POST",
+    body: formData,
+  });
 
-  try {
-    const response = await fetch("/api/register/", {
-      method: "POST",
-      body: formData,
-    });
+  const data = await response.json();
 
-    const data = await response.json();
-
-    // ✅ success
-    if (response.ok) {
-      alert("Signup successful");
+  // ✅ success
+  if (response.ok) {
+    Swal.fire({
+      title: "Signup successful!",
+      text: "Your account has been created. Please login.",
+      icon: "success"
+    }).then(() => {
       window.location.href = "/login/";
-      return;
-    }
-
-    // ❌ backend errors
-    let errorMsg = "";
-    for (const field in data) {
-      errorMsg += `${field}: ${data[field][0]}\n`;
-    }
-    alert(errorMsg);
-
-  } catch (err) {
-    console.error(err);
-    alert("Server error");
+    });
+    return;
   }
+
+  // ❌ backend errors
+  let errorMsg = "";
+  for (const field in data) {
+    errorMsg += `${field}: ${data[field][0]}\n`;
+  }
+
+  Swal.fire({
+    title: "Signup failed",
+    text: errorMsg,
+    icon: "error"
+  });
+
+} catch (err) {
+  console.error(err);
+  Swal.fire({
+    title: "Server error",
+    text: "Please try again later.",
+    icon: "error"
+  });
+}
 });
 </script>
 

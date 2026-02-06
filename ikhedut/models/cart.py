@@ -13,7 +13,6 @@ class Cart(models.Model):
     def is_expired(self):
         return timezone.now() > self.created_at + timedelta(minutes=30)
 
-
 class Cartitems(models.Model):
     cart = models.ForeignKey(
         Cart,

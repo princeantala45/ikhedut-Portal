@@ -280,54 +280,76 @@ has-[:checked]:border-green-600 has-[:checked]:bg-green-50">
     });
     /* ========= FINAL SUBMIT VALIDATION ========= */
 
-    const checkoutForm = document.getElementById("checkout-form");
-    checkoutForm.addEventListener("submit", async e => {
-      e.preventDefault();
+  const checkoutForm = document.getElementById("checkout-form");
+  checkoutForm.addEventListener("submit", async e => {
+    e.preventDefault();
 
-      const paymentMethod = checkoutForm.querySelector(
-        'input[name="payment_method"]:checked'
-      );
+    const paymentMethod = checkoutForm.querySelector(
+      'input[name="payment_method"]:checked'
+    );
 
-      if (!paymentMethod) {
-        alert("Please select a payment method.");
-        return;
-      }
+    if (!paymentMethod) {
+      Swal.fire({
+        title: "Oops!",
+        text: "Please select a payment method.",
+        icon: "warning"
+      });
+      return;
+    }
 
-      const token = localStorage.getItem("access");
-      if (!token) {
-        alert("Your session expired. Please login again.");
+    const token = localStorage.getItem("access");
+    if (!token) {
+      Swal.fire({
+        title: "Session expired",
+        text: "Please login again.",
+        icon: "error"
+      }).then(() => {
         window.location.href = "/login/";
-        return;
-      }
+      });
+      return;
+    }
 
-      const formData = new FormData(checkoutForm);
-      const payload = Object.fromEntries(formData.entries());
+    const formData = new FormData(checkoutForm);
+    const payload = Object.fromEntries(formData.entries());
 
-      payload.total_amount = Number("{{ total }}");
+    payload.total_amount = Number("{{ total }}");
 
-      try {
-        const res = await fetch("/api/checkout/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: JSON.stringify(payload)
-        });
+    try {
+      const res = await fetch("/api/checkout/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(payload)
+      });
 
-        const result = await res.json();
+      const result = await res.json();
 
-        if (res.ok) {
-          alert("Order placed successfully!");
+      if (res.ok) {
+        Swal.fire({
+          title: "Order placed successfully!",
+          icon: "success"
+        }).then(() => {
           window.location.href = "/order_success";
-        } else {
-          alert(result.error || "Checkout failed. Please check your details.");
-        }
-      } catch (error) {
-        console.error("Submission error:", error);
-        alert("An error occurred. Please try again.");
+        });
+      } else {
+        Swal.fire({
+          title: "Checkout failed",
+          text: result.error || "Checkout failed. Please check your details.",
+          icon: "error"
+        });
       }
-    });
+    } catch (error) {
+      console.error("Submission error:", error);
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred. Please try again.",
+        icon: "error"
+      });
+    }
+  });
+
   });
 </script>
 

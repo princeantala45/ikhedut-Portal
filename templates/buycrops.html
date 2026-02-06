@@ -196,17 +196,30 @@
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          alert("Added to cart");
-          window.location.href = "/cart/";
+          Swal.fire({
+            title: "Added to cart successfully!",
+            icon: "success"
+          }).then(() => {
+            window.location.href = "/cart/";
+          });
         } else {
-          alert(data.error || "Failed to add");
+          Swal.fire({
+            title: "Oops!",
+            text: data.error || "Failed to add",
+            icon: "error"
+          });
         }
       })
       .catch(() => {
-        alert("Server error");
+        Swal.fire({
+          title: "Error",
+          text: "Server error",
+          icon: "error"
+        });
       });
   });
 </script>
+
 
 <!-- STYLES -->
 <style>

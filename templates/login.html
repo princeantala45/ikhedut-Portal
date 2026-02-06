@@ -96,7 +96,7 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
             "Content-Type": "application/json",
             "X-CSRFToken": csrfToken
         },
-        credentials: "same-origin",   // 🔑 THIS SAVES SESSION
+        credentials: "same-origin",
         body: JSON.stringify({
             username: username,
             password: password
@@ -105,17 +105,33 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
     .then(res => res.json())
     .then(data => {
         if (data.access) {
-            // JWT (optional, for APIs)
             localStorage.setItem("access", data.access);
-            localStorage.setItem("refresh", data.refresh);
+            localStorage.setItem("refresh", data.refresh); // ✅ FIXED
 
-            // Reload page so navbar updates
-            window.location.href = "/";
+            Swal.fire({
+                title: "Welcome to ikhedut-Portal!",
+                text: "Login successful.",
+                icon: "success"
+            }).then(() => {
+                window.location.href = "/";
+            });
         } else {
-            alert("Login failed");
+            Swal.fire({
+                title: "Login failed",
+                text: data.detail || "Invalid credentials. Please try again.",
+                icon: "error"
+            });
         }
+    })
+    .catch(() => {
+        Swal.fire({
+            title: "Error",
+            text: "Server error. Please try again.",
+            icon: "error"
+        });
     });
 });
+
 </script>
 
 
