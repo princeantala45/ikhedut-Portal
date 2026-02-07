@@ -11,7 +11,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from rest_framework import viewsets,serializers
-from rest_framework.permissions import AllowAny,IsAdminUser,IsAuthenticated
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from .serializer import *
 from django.db.models import Sum, Min
 from django.http import JsonResponse
@@ -20,7 +20,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response  import Response
 from rest_framework import status
-from .models import CropSale
 from rest_framework.parsers import MultiPartParser, FormParser,JSONParser
 from rest_framework import generics
 from django.shortcuts import render, get_object_or_404
@@ -332,10 +331,7 @@ def expire_cart_item(request, item_id):
 def postedadvertisement(request):
     order = request.GET.get("order", "new")
 
-    if order == "old":
-        ads = Ad.objects.filter(is_approved=True).order_by("id")
-    else:
-        ads = Ad.objects.filter(is_approved=True).order_by("-id")
+    ads = Ad.objects.all().order_by("-id" if order != "old" else "id")
 
     context = {
         "ads": ads,
@@ -345,7 +341,6 @@ def postedadvertisement(request):
     }
 
     return render(request, "postedadvertisement.html", context)
-
 
 
 @require_POST
