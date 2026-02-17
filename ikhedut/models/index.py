@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.exceptions import ValidationError
 
 class Slider(models.Model):
     image=models.ImageField(upload_to="main-slider-image/")
