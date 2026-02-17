@@ -11,7 +11,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from rest_framework import viewsets,serializers
-from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.permissions import AllowAny,IsAuthenticated,IsAdminUser
 from .serializer import *
 from django.db.models import Sum, Min
 from django.http import JsonResponse
@@ -132,7 +132,7 @@ def sellcrops_page(request):
 class ContactView(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = Conactserializers
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 @login_required
 def contact(request):
