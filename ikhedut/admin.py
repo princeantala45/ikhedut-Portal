@@ -1,4 +1,3 @@
-from operator import index
 from django.contrib import admin
 from adminsortable2.admin import SortableAdminMixin
 from ikhedut.models import (
@@ -138,7 +137,7 @@ class SliderAdmin(admin.ModelAdmin):
 
 @admin.register(Slider2)
 class Slider2Admin(admin.ModelAdmin):
-    list_display = ("id", "image", "is_active")
+    list_display = ("image", "is_active")
     list_editable = ("is_active",)
 
 @admin.register(SupportedCompany)

@@ -231,4 +231,3 @@ SIMPLE_JWT = {
     "CHECK_USER_IS_ACTIVE": True,
 }
 
-

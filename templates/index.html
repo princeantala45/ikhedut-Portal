@@ -101,39 +101,47 @@
     </h1>
   </div>
 
-  <a href="/buycrops" class="block">
+  <a href="/buycrops" class="block overflow-hidden">
 
-    <marquee behavior="scroll" direction="left" scrollamount="8"  onmouseover="this.stop();"
-      onmouseout="this.start();">
-    
-      <div class="flex gap-6 items-center px-6">
+    <div class="crop-marquee">
+      <div class="crop-track">
 
         {% for crop in crops %}
-        <div class="flex flex-col items-center justify-center
-                 bg-white border border-gray-100
-                 rounded-xl px-2
-                 min-w-[120px]
-                 shadow-sm hover:shadow-lg
-                 transition duration-300">
+        <div class="crop-card">
           <p class="text-sm font-semibold text-gray-800 text-center">
             {{ crop.crop|title }}
           </p>
-          {% if crop.image %}
-          <img src="{{ crop.image.url }}" alt="{{ crop.crop }}" class="h-24 w-24 object-cover rounded-lg mb-1">
-          {% else %}
-          <div class="h-24 w-24 bg-white-100 rounded-lg mb-3"></div>
-          {% endif %}
 
+          {% if crop.image %}
+          <img src="{{ crop.image.url }}" alt="{{ crop.crop }}">
+          {% else %}
+          <div class="empty-img"></div>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Duplicate loop for smooth infinite scroll -->
+        {% for crop in crops %}
+        <div class="crop-card">
+          <p class="text-sm font-semibold text-gray-800 text-center">
+            {{ crop.crop|title }}
+          </p>
+
+          {% if crop.image %}
+          <img src="{{ crop.image.url }}" alt="{{ crop.crop }}">
+          {% else %}
+          <div class="empty-img"></div>
+          {% endif %}
         </div>
         {% endfor %}
 
       </div>
-
-    </marquee>
+    </div>
 
   </a>
 
 </section>
+
 
 
 <section class="py-12 bg-gray-50">
@@ -409,22 +417,27 @@
 <!-- ------------------------supported-companys---------------------------- -->
 <section>
   <div class="supported-company">
-
     <div class="px-4 mb-2 text-center">
       <h1 id="all-header5" class="text-2xl md:text-3xl font-semibold text-green-700">
         Supported Integrations
       </h1>
     </div>
-    <marquee behavior="" scrollamount="10" direction="">
-      <div class="marquee-div">
-     {% for supported_company in supported_company_obj %}
-          <img src="{{supported_company.company_image.url}}" alt="">
+
+    <div class="marquee-wrapper">
+      <div class="marquee-track">
+        {% for supported_company_obj in supported_companies %}
+          <img src="{{supported_company_obj.company_image.url}}" alt="">
         {% endfor %}
-          
+
+        <!-- Duplicate for smooth infinite scroll -->
+        {% for supported_company_obj in supported_companies %}
+          <img src="{{supported_company_obj.company_image.url}}" alt="">
+        {% endfor %}
       </div>
-    </marquee>
+    </div>
   </div>
 </section>
+
 
 {% comment %} ================================customer-review============================= {% endcomment %}
 <section class="bg-gradient-to-br from-gray-50 to-white py-20 px-6 overflow-hidden">
