@@ -76,13 +76,13 @@
 
 <div class="text-gray-700 leading-relaxed text-base md:text-lg overflow-x-hidden">
 {% if slider_content %}
-  <p id="welcome-text-1">
-    {{ slider_content.first_line_text }}
-  </p>
+  <div id="welcome-text-1">
+    {{ slider_content.first_line_text|safe }}
+  </div>
   <br>
-  <p id="welcome-text-2">
-    {{ slider_content.second_line_text }}
-  </p>
+  <div id="welcome-text-2">
+    {{ slider_content.second_line_text|safe }}
+  </div>
 {% endif %}
 
 </div>

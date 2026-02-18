@@ -1,6 +1,6 @@
 
 from django.db import models
-
+from ckeditor.fields import RichTextField
 class Slider(models.Model):
     image=models.ImageField(upload_to="main-slider-image/")
     is_active = models.BooleanField(default=False)
@@ -10,8 +10,9 @@ class Slider2(models.Model):
     is_active=models.BooleanField(default=False)
 
 class Slider_content(models.Model):
-    first_line_text=models.TextField(max_length=500,blank=False)
-    second_line_text=models.TextField(max_length=500,blank=False)
+    first_line_text=RichTextField(max_length=500,blank=False)
+    second_line_text=RichTextField(max_length=500,blank=False)
+
 
     def __str__(self):
         return "Content of Slider"
