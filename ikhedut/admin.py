@@ -19,7 +19,8 @@ from ikhedut.models import (
     Equipment,
     Ox,
     AgroChemical,
-    SprayPump
+    SprayPump,
+    AgricultureGuidance
 )
 from ikhedut.models.fertilizer import Fertilizer
 
@@ -71,7 +72,7 @@ class CropSaleAdmin(admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 @admin.register(Ad)
@@ -104,7 +105,7 @@ class AdAdmin(admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 
@@ -177,7 +178,7 @@ class SliderAdmin(admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 
@@ -192,7 +193,7 @@ class Slider2Admin(admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 @admin.register(SupportedCompany)
@@ -206,7 +207,7 @@ class SupportedCompanyAdmin(SortableAdminMixin,admin.ModelAdmin):
                 '<img src="{}" width="80" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.company_image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 
@@ -231,7 +232,7 @@ class TractorAdmin(SortableAdminMixin, admin.ModelAdmin):
                 '<img src="{}" width="120" height="69" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 
@@ -248,7 +249,7 @@ class EquipmentAdmin(SortableAdminMixin, admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 
@@ -266,7 +267,7 @@ class OxAdmin(SortableAdminMixin,admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
 
@@ -286,7 +287,7 @@ class FertilizerAdmin(SortableAdminMixin, admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
 
     image_preview.short_description = "Image"
 
@@ -305,11 +306,40 @@ class AgroChemicalAdmin(SortableAdminMixin,admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
     
     image_preview.short_description = "Image"
     
     
+
+@admin.register(AgricultureGuidance)
+class AgricultureGuidanceAdmin(SortableAdminMixin, admin.ModelAdmin):
+
+    list_display = (
+        "crop_name",
+        "crop_season",
+        "crop_Sowing",
+        "crop_Yield",
+        "order",
+        "image_preview",
+    )
+
+    search_fields = ("crop_name", "crop_season")
+    list_filter = ("crop_season",)
+
+    list_editable = ("order",)
+    ordering = ("order",)
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
+                obj.image.url
+            )
+        return "No Image Avalible"
+
+    image_preview.short_description = "Image"
+
 @admin.register(SprayPump)
 class SprayPumpAdmin(SortableAdminMixin, admin.ModelAdmin):
 
@@ -324,6 +354,6 @@ class SprayPumpAdmin(SortableAdminMixin, admin.ModelAdmin):
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
             )
-        return "-"
+        return "No Image Avalible"
 
     image_preview.short_description = "Image"

@@ -40,7 +40,7 @@ class SupportedCompany(models.Model):
 class QuickLink(models.Model):
     q_page_name = models.CharField(max_length=100)
     q_page_url = models.CharField(max_length=200)
-    q_order = models.PositiveIntegerField(default=0)
+    q_order = models.PositiveIntegerField(default=0)    
 
     class Meta:
         ordering = ["q_order"]

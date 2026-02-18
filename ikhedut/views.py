@@ -114,12 +114,15 @@ def login_api(request):
     login(request, user)
 
     refresh = RefreshToken.for_user(user)
+    access_token = refresh.access_token
 
     return Response({
-        "access": str(refresh.access_token),
+        "access": str(access_token),
         "refresh": str(refresh),
+        "access_expires": access_token["exp"],
         "username": user.username  # type: ignore[attr-defined]
     })
+
     
 @login_required
 def sellcrops_page(request):
@@ -161,6 +164,7 @@ def agricultureguidance(request):
     context={
         "nav_items": Navbar.objects.all(),
         "quick_links": QuickLink.objects.all(),
+        "crops":AgricultureGuidance.objects.all(),
     }
     return render(request,"agricultureguidance.html",context)
 

@@ -74,7 +74,36 @@ Agricultureguidance
   </div>
 </section>
 
+
 <main id="cropGrid" class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+
+  {% for crop in crops %}
+  <article class="bg-white rounded-2xl pt-6 pb-10 px-6 sm:px-10 shadow border transition transform hover:-translate-y-2 hover:shadow-xl reveal" data-name="{{ crop.crop_name|lower }}">
+    
+    <img src="{{ crop.image.url }}" 
+         class="w-full max-w-[200px] mx-auto sm:mx-0 transition-transform duration-300 hover:scale-105 mb-4" 
+         alt="{{ crop.crop_name }}">
+
+    <h4 class="text-lg font-semibold">{{ crop.crop_name }}</h4>
+    <p class="text-sm text-gray-600 mb-3">{{ crop.crop_season }}</p>
+
+    <ul class="space-y-2 text-sm">
+      <li><strong>Sowing:</strong> {{ crop.crop_Sowing }}</li>
+      <li><strong>Harvest:</strong> {{ crop.crop_Harvest }}</li>
+      <li><strong>Soil:</strong> {{ crop.crop_Soil }}</li>
+      <li><strong>Water:</strong> {{ crop.crop_Water }}</li>
+      <li><strong>Seed rate:</strong> {{ crop.crop_Seed_rate }}</li>
+      <li><strong>Fertilizer:</strong> {{ crop.crop_Fertilizer }}</li>
+      <li><strong>Pests/Diseases:</strong> {{ crop.crop_Problems }}</li>
+      <li><strong>Yield:</strong> {{ crop.crop_Yield }}</li>
+    </ul>
+
+  </article>
+  {% endfor %}
+
+</main>
+
+{% comment %} <main id="cropGrid" class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 
   <article class="bg-white rounded-2xl pt-6 pb-10 px-6 sm:px-10 shadow border transition transform hover:-translate-y-2 hover:shadow-xl reveal" data-name="wheat">
     <img src="{% static 'agriculture-guidance-images/wheat.jpg'%}" class="w-full max-w-[200px] mx-auto sm:mx-0 transition-transform duration-300 hover:scale-105 mb-4" alt="">
@@ -422,7 +451,7 @@ Agricultureguidance
     </ul>
   </article>
 
-</main>
+</main> {% endcomment %}
 
   </div>
   <script>

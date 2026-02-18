@@ -104,9 +104,11 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
     })
     .then(res => res.json())
     .then(data => {
+
         if (data.access) {
             localStorage.setItem("access", data.access);
-            localStorage.setItem("refresh", data.refresh); // ✅ FIXED
+            localStorage.setItem("refresh", data.refresh);
+            localStorage.setItem("access_expires", data.access_expires);
 
             Swal.fire({
                 title: "Welcome to ikhedut-Portal!",
@@ -115,13 +117,15 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
             }).then(() => {
                 window.location.href = "/";
             });
+
         } else {
             Swal.fire({
                 title: "Login failed",
-                text: data.detail || "Invalid credentials. Please try again.",
+                text: data.error || "Invalid credentials. Please try again.",
                 icon: "error"
             });
         }
+
     })
     .catch(() => {
         Swal.fire({
@@ -132,7 +136,59 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
     });
 });
 
+
 </script>
+<script>
+function setupAutoLogout() {
+    const exp = localStorage.getItem("access_expires");
+    if (!exp) return;
+
+    const expiryTime = parseInt(exp) * 1000;
+    const now = Date.now();
+    const timeLeft = expiryTime - now;
+
+    if (timeLeft <= 0) {
+        forceLogout();
+        return;
+    }
+
+    // 1 minute before expiry
+    const warningTime = timeLeft - (60 * 1000);
+
+    if (warningTime > 0) {
+        setTimeout(() => {
+            Swal.fire({
+                title: "Session Expiring Soon",
+                text: "Your session will expire in 1 minute.",
+                icon: "warning",
+                confirmButtonText: "OK"
+            });
+        }, warningTime);
+    }
+
+    // Auto logout at expiry
+    setTimeout(() => {
+        forceLogout();
+    }, timeLeft);
+}
+
+function forceLogout() {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("access_expires");
+
+    Swal.fire({
+        title: "Session Expired",
+        text: "You have been logged out.",
+        icon: "info"
+    }).then(() => {
+        window.location.href = "/login/";
+    });
+}
+
+setupAutoLogout();
+</script>
+
 
 
 {% endblock content %}

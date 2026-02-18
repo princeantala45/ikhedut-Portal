@@ -11,3 +11,4 @@ from .ox import Ox
 from .agrochemicals import AgroChemical
 from .fertilizer import Fertilizer
 from .spraypump import SprayPump
+from .agricultureguidance import AgricultureGuidance
