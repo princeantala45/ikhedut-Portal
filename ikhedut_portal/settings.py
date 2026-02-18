@@ -35,23 +35,6 @@ INSTALLED_APPS = [
     "adminsortable2",
     "ckeditor",
 ]
-CKEDITOR_CONFIGS = {
-    'default': {
-        'height': 400,
-        'width': '100%',
-        'toolbar': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList'],
-            ['Link', 'Unlink'],
-            ['Image', 'Table'],
-            ['Format'],
-            ['RemoveFormat', 'Source']
-        ],
-        'removePlugins': 'elementspath',
-        'resize_enabled': False,
-    },
-}
-
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
