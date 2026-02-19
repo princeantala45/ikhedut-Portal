@@ -225,10 +225,10 @@
     <!-- Page Loader -->
     <div id="page-loader">
         <img src="{% static 'img/leaf-loader-CVgu4tmg.gif'%}" style="border-radius: 50%; width: 150px;" alt="">
-        <p style="color: white;">Loading...</p>
+        <p style="color: green;">Loading...</p>
     </div>
 
-    {% block header %}
+{% block header %}
 
     <div class="up-errow">
         <i class="fa-solid fa-angles-up" style="font-size: 20px;"></i>
@@ -342,7 +342,7 @@
             transition-[top] duration-500 ease-in-out" style="background-color:green;">
 
             <div class="relative flex h-16 items-center justify-between">
-                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                <div class="absolute inset-y-0 left-0 flex items-center md:hidden">
                     <!-- Mobile menu button-->
                     <button type="button" command="--toggle" commandfor="mobile-menu"
                         class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
@@ -387,7 +387,7 @@
                                 Advertisement</a>
                         </div>
                     </div> {% endcomment %}
-                    <div class="hidden sm:ml-6 sm:block">
+                    <div class="hidden md:ml-6 md:block">
                         <div class="flex space-x-4">
                             {% for item in nav_items %}
                             <a href="{{ item.page_url }}" class="rounded-md px-2 py-1 text-base text-white nav-link">
@@ -457,7 +457,7 @@
             </div>
             </div>
 
-            <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
+            <el-disclosure id="mobile-menu" hidden class="block md:hidden">
                 <div class="space-y-1 px-2 pt-2 pb-3">
                     <!-- Current: "bg-gray-900 dark:bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
                     {% for item in nav_items %}
@@ -485,7 +485,7 @@
         </script>
 
     </header>
-    {% endblock header %}
+{% endblock header %}
 
     {% block content %}
     {% endblock content %}

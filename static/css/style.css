@@ -72,12 +72,12 @@ html{
   background-color: #ffffff;
   border-radius: 2px;
   transform: translateX(-50%);
-  transition: width 0.25s ease;
+  transition: width .35s ease;
 }
 
 /* Show underline on hover */
 .nav-link:hover::after {
-  width: 60%;
+  width: 75%;
 }
 
 /* Active state */
@@ -97,7 +97,7 @@ html{
   }
 
   .nav-link::after {
- content: "";
+  content: "";
   position: absolute;
   left: 50%;
   bottom: -5px;

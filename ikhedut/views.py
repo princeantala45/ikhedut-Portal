@@ -1,3 +1,4 @@
+
 from ikhedut.admin import Slider2Admin
 from ikhedut.models import tractor
 from .models import *  # type: ignore[attr-defined]
@@ -28,7 +29,12 @@ from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import login
 
 
-
+def marketprice(request):
+    context={
+        "nav_items": Navbar.objects.all(),
+        "quick_links": QuickLink.objects.all(),
+    }
+    return render(request,"marketprice.html",context)
 
 @login_required
 def postadvertisement(request):

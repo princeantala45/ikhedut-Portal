@@ -24,7 +24,6 @@ from ikhedut.models import (
 )
 from ikhedut.models.fertilizer import Fertilizer
 
-
 admin.site.register(Contact)
 admin.site.register(Signup)
 
@@ -33,7 +32,6 @@ class NavbarAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ("id","page_name", "page_url", "order")
     list_editable = ("page_name","page_url",)
     
-
 @admin.register(Slider_content)
 class Slider_content_admin(admin.ModelAdmin):
     list_display = ("id","first_line_text", "second_line_text",)
@@ -271,7 +269,6 @@ class OxAdmin(SortableAdminMixin,admin.ModelAdmin):
     
     image_preview.short_description = "Image"
 
-
 @admin.register(Fertilizer)
 class FertilizerAdmin(SortableAdminMixin, admin.ModelAdmin):
 
@@ -310,8 +307,6 @@ class AgroChemicalAdmin(SortableAdminMixin,admin.ModelAdmin):
     
     image_preview.short_description = "Image"
     
-    
-
 @admin.register(AgricultureGuidance)
 class AgricultureGuidanceAdmin(SortableAdminMixin, admin.ModelAdmin):
 

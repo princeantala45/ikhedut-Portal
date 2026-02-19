@@ -30,6 +30,7 @@ urlpatterns = [
     path("sellcrops/", views.sellcrops_page,name="sellcrops_page"),
     path("buycrops/", views.buycrops,name="buycrops"),
     path("tractor/", views.tractor_page,name="tractor"),
+    path("marketprice/", views.marketprice,name="marketprice"),
     path("signup/", views.signup,name="signup"),
     path("tillage/", views.tillage,name="tillage"),
     path("ox/", views.ox,name="ox"),

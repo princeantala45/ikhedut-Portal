@@ -13,7 +13,6 @@ class Slider_content(models.Model):
     first_line_text=RichTextField(max_length=500,blank=False)
     second_line_text=RichTextField(max_length=500,blank=False)
 
-
     def __str__(self):
         return "Content of Slider"
     
@@ -59,4 +58,4 @@ class Informations(models.Model):
         ordering = ["position"]
 
     def __str__(self):
-        return self.info_title
+        return self.info_title              
