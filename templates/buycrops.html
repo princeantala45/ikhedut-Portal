@@ -4,7 +4,6 @@
 {% block content %}
 <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
 <div class="max-w-7xl mx-auto px-6 py-10">
-
   <!-- HEADER -->
   <div class="text-center mb-10 mt-12">
     <h2 id="otherpageheader" class="text-3xl font-bold text-gray-900">
@@ -75,8 +74,7 @@
       <div class="flex items-center justify-center gap-2 mb-3">
         <button type="button" class="qty-btn decrement" data-min="20">−</button>
         <span class="qty-value qty-box">20</span>
-        <button type="button" class="qty-btn increment"
-                data-max="${quantity}">+</button>
+        <button type="button" class="qty-btn increment" data-max="${quantity}">+</button>
       </div>
 
       <input type="hidden" class="quantity-input" value="20">

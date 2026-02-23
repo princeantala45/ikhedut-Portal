@@ -1,3 +1,4 @@
+from mimetypes import init
 from pathlib import Path
 from datetime import timedelta
 
@@ -70,10 +71,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ikhedut_portal.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ikhedut_portal_db',
+        'USER': 'root',              
+        'PASSWORD': 'Prince@123',   
+        'HOST': '127.0.0.1',        
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 
@@ -218,3 +233,5 @@ SIMPLE_JWT = {
     "CHECK_USER_IS_ACTIVE": True,
 }
 
+
+LOGIN_URL = "login"

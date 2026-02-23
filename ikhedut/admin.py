@@ -36,7 +36,7 @@ class NavbarAdmin(SortableAdminMixin, admin.ModelAdmin):
 class Slider_content_admin(admin.ModelAdmin):
     list_display = ("id","first_line_text", "second_line_text",)
     list_editable = ("first_line_text","second_line_text")
-
+    
     def has_add_permission(self, request):
         return False
     
@@ -334,6 +334,8 @@ class AgricultureGuidanceAdmin(SortableAdminMixin, admin.ModelAdmin):
         return "No Image Avalible"
 
     image_preview.short_description = "Image"
+
+
 
 @admin.register(SprayPump)
 class SprayPumpAdmin(SortableAdminMixin, admin.ModelAdmin):

@@ -12,7 +12,6 @@ admin.site.site_title = "ikhedut Portal"
 admin.site.index_title = "Welcome to ikhedut Portal Admin"
 
 urlpatterns = [    
-    path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
     path("",include('ikhedut.urls')),
     
