@@ -20,20 +20,19 @@ Posted-advertisement
             Your listed products appear below
         </p>
     </div>
-<div class="flex justify-start mb-4">
-    <form method="get" class="flex gap-2">
-        <select name="order"
-                onchange="this.form.submit()"
+    <div class="flex justify-start mb-4">
+        <form method="get" class="flex gap-2">
+            <select name="order" onchange="this.form.submit()"
                 class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-            <option value="new" {% if request.GET.order != 'old' %}selected{% endif %}>
-                Newest first
-            </option>
-            <option value="old" {% if request.GET.order == 'old' %}selected{% endif %}>
-                Oldest first
-            </option>
-        </select>
-    </form>
-</div>
+                <option value="new" {% if request.GET.order !='old' %}selected{% endif %}>
+                    Newest first
+                </option>
+                <option value="old" {% if request.GET.order=='old' %}selected{% endif %}>
+                    Oldest first
+                </option>
+            </select>
+        </form>
+    </div>
 
     <!-- Card Wrapper -->
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
@@ -49,11 +48,11 @@ Posted-advertisement
                 <!-- Image -->
                 {% if ad.image %}
                 <div class="w-full md:w-40 shrink-0 overflow-hidden rounded-lg">
-                    <img src="{{ ad.image.url }}"  class="w-full h-40 object-cover
+                    <img src="{{ ad.image.url }}" class="w-full h-40 object-cover
                                            group-hover:scale-105 transition-transform duration-300">
                 </div>
                 {% endif %}
-                
+
                 <!-- Content -->
                 <div class="flex-1 flex flex-col justify-between">
 
@@ -84,10 +83,10 @@ Posted-advertisement
                             <i class="fa-solid fa-phone text-blue-500"></i>
                             {{ ad.mobile }}
                         </div>
-<div class="flex items-center gap-2">
-    <i class="fa-solid fa-location-dot text-blue-500"></i>
-    {{ ad.city }}, {{ ad.state }}
-</div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-blue-500"></i>
+                            {{ ad.city }}, {{ ad.state }}
+                        </div>
 
 
                     </div>
@@ -126,4 +125,3 @@ Posted-advertisement
 </style>
 
 {% endblock content %}
- 

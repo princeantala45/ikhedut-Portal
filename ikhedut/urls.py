@@ -10,6 +10,12 @@ router = routers.DefaultRouter()
 router.register(r"contact", ContactView, basename="contact")
 
 urlpatterns = [     
+               
+    # email authen            
+    path('otp/request/', RequestOTPView.as_view(), name='request-otp'),
+    path('otp/resend/', ResendOTPView.as_view(), name='resend-otp'),
+    path('otp/verify/', VerifyOTPView.as_view(), name='verify-otp'),
+               
     path("api/register/", RegistrerUser.as_view()),
     path("generic-sellcrops/", SellCropsGeneric.as_view()),
     path("generic-sellcrops1/<int:id>/", SellCropsGeneric1.as_view()),
@@ -22,10 +28,9 @@ urlpatterns = [
     path("", views.index, name="ikhedut"),
 
     path("api/", include(router.urls)),
-    path("api/cart/", views.api_add_to_cart, name="api_add_to_cart"),
+    path("api/cart/", views.api_add_to_cart, name="api_add_to_cart"),               
     path("api/buy-crops/", buy_crops_api, name="buy_crops_api"),
     path("api/checkout/", checkout_api, name="checkout_api"),
-
     path("agricultureguidance/", views.agricultureguidance,name="agricultureguidance"),
     path("sellcrops/", views.sellcrops_page,name="sellcrops_page"),
     path("buycrops/", views.buycrops,name="buycrops"),
@@ -61,3 +66,6 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+

@@ -42,13 +42,8 @@ Mandi Prices
 
         <!-- Crop Search -->
         <div class="relative">
-          <input 
-            type="text"
-            id="commodityInput"
-            placeholder="Search crop..."
-            autocomplete="off"
-            class="w-full px-3 py-2 text-sm rounded-md border border-gray-300 bg-gray-50 focus:ring-1 focus:ring-green-600 focus:outline-none"
-          />
+          <input type="text" id="commodityInput" placeholder="Search crop..." autocomplete="off"
+            class="w-full px-3 py-2 text-sm rounded-md border border-gray-300 bg-gray-50 focus:ring-1 focus:ring-green-600 focus:outline-none" />
           <div id="suggestions"
             class="absolute hidden bg-white border border-gray-200 rounded-md shadow mt-1 w-full max-h-48 overflow-y-auto z-50 text-sm">
           </div>
@@ -61,8 +56,8 @@ Mandi Prices
 
       </div>
     </div>
-        
-    <!-- Results -->  
+
+    <!-- Results -->
     <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
 
       <div class="px-4 py-3 bg-gray-50 border-b flex justify-between items-center">
@@ -101,152 +96,152 @@ Mandi Prices
 </main>
 
 <script>
-const API_KEY = "579b464db66ec23bdd0000012eb03de7bc5649d37a0ed121513748f2";
-const BASE_URL = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070";
+  const API_KEY = "579b464db66ec23bdd0000012eb03de7bc5649d37a0ed121513748f2";
+  const BASE_URL = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070";
 
-const stateSelect = document.getElementById("stateSelect");
-const districtSelect = document.getElementById("districtSelect");
-const marketSelect = document.getElementById("marketSelect");
-const commodityInput = document.getElementById("commodityInput");
-const suggestionsBox = document.getElementById("suggestions");
-const tableBodyDesktop = document.getElementById("priceTableDesktop");
-const tableBodyMobile = document.getElementById("priceTableMobile");
-const emptyState = document.getElementById("emptyState");
-const resultCount = document.getElementById("resultCount");
+  const stateSelect = document.getElementById("stateSelect");
+  const districtSelect = document.getElementById("districtSelect");
+  const marketSelect = document.getElementById("marketSelect");
+  const commodityInput = document.getElementById("commodityInput");
+  const suggestionsBox = document.getElementById("suggestions");
+  const tableBodyDesktop = document.getElementById("priceTableDesktop");
+  const tableBodyMobile = document.getElementById("priceTableMobile");
+  const emptyState = document.getElementById("emptyState");
+  const resultCount = document.getElementById("resultCount");
 
-let commodityCache = [];
+  let commodityCache = [];
 
-async function fetchData(params = {}) {
-  const url = new URL(BASE_URL);
-  url.searchParams.append("api-key", API_KEY);
-  url.searchParams.append("format", "json");
-  url.searchParams.append("limit", "500");
+  async function fetchData(params = {}) {
+    const url = new URL(BASE_URL);
+    url.searchParams.append("api-key", API_KEY);
+    url.searchParams.append("format", "json");
+    url.searchParams.append("limit", "500");
 
-  for (let key in params) {
-    url.searchParams.append(key, params[key]);
+    for (let key in params) {
+      url.searchParams.append(key, params[key]);
+    }
+
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.records || [];
   }
 
-  const response = await fetch(url);
-  const data = await response.json();
-  return data.records || [];
-}
-
-function populateDropdown(select, items, key) {
-  select.innerHTML = `<option value="">Select ${key}</option>`;
-  const unique = [...new Set(items.map(item => item[key]).filter(Boolean))];
-  unique.sort();
-  unique.forEach(value => {
-    const option = document.createElement("option");
-    option.value = value;
-    option.textContent = value;
-    select.appendChild(option);
-  });
-}
-
-async function loadStates() {
-  const data = await fetchData();
-  populateDropdown(stateSelect, data, "state");
-  commodityCache = [...new Set(data.map(item => item.commodity).filter(Boolean))];
-}
-
-stateSelect.addEventListener("change", async () => {
-  districtSelect.innerHTML = "<option>District</option>";
-  marketSelect.innerHTML = "<option>Market</option>";
-  if (!stateSelect.value) return;
-  const data = await fetchData({ "filters[state]": stateSelect.value });
-  populateDropdown(districtSelect, data, "district");
-});
-
-districtSelect.addEventListener("change", async () => {
-  marketSelect.innerHTML = "<option>Market</option>";
-  if (!districtSelect.value) return;
-  const data = await fetchData({
-    "filters[state]": stateSelect.value,
-    "filters[district]": districtSelect.value
-  });
-  populateDropdown(marketSelect, data, "market");
-});
-
-/* Suggestions */
-commodityInput.addEventListener("input", () => {
-  const value = commodityInput.value.trim().toLowerCase();
-  if (value.length < 2) {
-    suggestionsBox.classList.add("hidden");
-    return;
+  function populateDropdown(select, items, key) {
+    select.innerHTML = `<option value="">Select ${key}</option>`;
+    const unique = [...new Set(items.map(item => item[key]).filter(Boolean))];
+    unique.sort();
+    unique.forEach(value => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      select.appendChild(option);
+    });
   }
 
-  const matches = commodityCache
-    .filter(item => item.toLowerCase().includes(value))
-    .slice(0, 6);
+  async function loadStates() {
+    const data = await fetchData();
+    populateDropdown(stateSelect, data, "state");
+    commodityCache = [...new Set(data.map(item => item.commodity).filter(Boolean))];
+  }
 
-  suggestionsBox.innerHTML = "";
-  matches.forEach(match => {
-    const div = document.createElement("div");
-    div.className = "px-3 py-2 hover:bg-green-50 cursor-pointer";
-    div.textContent = match;
-    div.onclick = () => {
-      commodityInput.value = match;
+  stateSelect.addEventListener("change", async () => {
+    districtSelect.innerHTML = "<option>District</option>";
+    marketSelect.innerHTML = "<option>Market</option>";
+    if (!stateSelect.value) return;
+    const data = await fetchData({ "filters[state]": stateSelect.value });
+    populateDropdown(districtSelect, data, "district");
+  });
+
+  districtSelect.addEventListener("change", async () => {
+    marketSelect.innerHTML = "<option>Market</option>";
+    if (!districtSelect.value) return;
+    const data = await fetchData({
+      "filters[state]": stateSelect.value,
+      "filters[district]": districtSelect.value
+    });
+    populateDropdown(marketSelect, data, "market");
+  });
+
+  /* Suggestions */
+  commodityInput.addEventListener("input", () => {
+    const value = commodityInput.value.trim().toLowerCase();
+    if (value.length < 2) {
       suggestionsBox.classList.add("hidden");
+      return;
+    }
+
+    const matches = commodityCache
+      .filter(item => item.toLowerCase().includes(value))
+      .slice(0, 6);
+
+    suggestionsBox.innerHTML = "";
+    matches.forEach(match => {
+      const div = document.createElement("div");
+      div.className = "px-3 py-2 hover:bg-green-50 cursor-pointer";
+      div.textContent = match;
+      div.onclick = () => {
+        commodityInput.value = match;
+        suggestionsBox.classList.add("hidden");
+      };
+      suggestionsBox.appendChild(div);
+    });
+
+    matches.length ? suggestionsBox.classList.remove("hidden")
+      : suggestionsBox.classList.add("hidden");
+  });
+
+  document.addEventListener("click", () => {
+    suggestionsBox.classList.add("hidden");
+  });
+
+  async function loadPrices() {
+    if (!marketSelect.value) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Market Required',
+        text: 'Please select a market before searching.',
+        confirmButtonColor: '#16a34a'
+      });
+      return;
+    }
+
+
+    tableBodyDesktop.innerHTML = "";
+    tableBodyMobile.innerHTML = "";
+    emptyState.classList.add("hidden");
+    resultCount.textContent = "Loading...";
+
+    const params = {
+      "filters[state]": stateSelect.value,
+      "filters[district]": districtSelect.value,
+      "filters[market]": marketSelect.value,
+      limit: 100
     };
-    suggestionsBox.appendChild(div);
-  });
 
-  matches.length ? suggestionsBox.classList.remove("hidden")
-                 : suggestionsBox.classList.add("hidden");
-});
+    if (commodityInput.value.trim() !== "") {
+      params["filters[commodity]"] = commodityInput.value.trim();
+    }
 
-document.addEventListener("click", () => {
-  suggestionsBox.classList.add("hidden");
-});
+    const data = await fetchData(params);
 
-async function loadPrices() {
-  if (!marketSelect.value) {
-  Swal.fire({
-    icon: 'warning',
-    title: 'Market Required',
-    text: 'Please select a market before searching.',
-    confirmButtonColor: '#16a34a'
-  });
-  return;
-}
+    if (!data.length) {
+      emptyState.classList.remove("hidden");
+      resultCount.textContent = "0 Results";
 
+      Swal.fire({
+        icon: 'info',
+        title: 'No Data Found',
+        text: 'No price records available for selected filters.',
+        confirmButtonColor: '#16a34a'
+      });
 
-  tableBodyDesktop.innerHTML = "";
-  tableBodyMobile.innerHTML = "";
-  emptyState.classList.add("hidden");
-  resultCount.textContent = "Loading...";
+      return;
+    }
 
-  const params = {
-    "filters[state]": stateSelect.value,
-    "filters[district]": districtSelect.value,
-    "filters[market]": marketSelect.value,
-    limit: 100
-  };
+    data.forEach(item => {
 
-  if (commodityInput.value.trim() !== "") {
-    params["filters[commodity]"] = commodityInput.value.trim();
-  }
-
-  const data = await fetchData(params);
-
-if (!data.length) {
-  emptyState.classList.remove("hidden");
-  resultCount.textContent = "0 Results";
-
-  Swal.fire({
-    icon: 'info',
-    title: 'No Data Found',
-    text: 'No price records available for selected filters.',
-    confirmButtonColor: '#16a34a'
-  });
-
-  return;
-}
-
-  data.forEach(item => {
-
-    // Desktop row
-    tableBodyDesktop.innerHTML += `
+      // Desktop row
+      tableBodyDesktop.innerHTML += `
       <tr>
         <td class="px-4 py-3 font-medium">${item.commodity}</td>
         <td class="px-4 py-3">₹${item.min_price}</td>
@@ -256,8 +251,8 @@ if (!data.length) {
       </tr>
     `;
 
-    // Mobile card
-    tableBodyMobile.innerHTML += `
+      // Mobile card
+      tableBodyMobile.innerHTML += `
       <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
         <div class="font-semibold text-sm mb-2">${item.commodity}</div>
         <div class="grid grid-cols-2 gap-2 text-xs">
@@ -268,20 +263,20 @@ if (!data.length) {
         </div>
       </div>
     `;
-  });
+    });
 
-  resultCount.textContent = `${data.length} Results`;
-  Swal.fire({
-  icon: 'success',
-  title: 'Prices Loaded',
-  text: `${data.length} records fetched successfully.`,
-  timer: 1500,
-  showConfirmButton: false
-});
+    resultCount.textContent = `${data.length} Results`;
+    Swal.fire({
+      icon: 'success',
+      title: 'Prices Loaded',
+      text: `${data.length} records fetched successfully.`,
+      timer: 1500,
+      showConfirmButton: false
+    });
 
-}
+  }
 
-loadStates();
+  loadStates();
 </script>
 
 {% endblock content %}

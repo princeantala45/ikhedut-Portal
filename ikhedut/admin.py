@@ -279,7 +279,7 @@ class FertilizerAdmin(SortableAdminMixin, admin.ModelAdmin):
     ordering = ("order",)
 
     def image_preview(self, obj):
-        if obj.image:
+        if obj.image:       
             return format_html(
                 '<img src="{}" width="60" height="60" style="object-fit:cover;border-radius:8px;" />',
                 obj.image.url
@@ -334,7 +334,6 @@ class AgricultureGuidanceAdmin(SortableAdminMixin, admin.ModelAdmin):
         return "No Image Avalible"
 
     image_preview.short_description = "Image"
-
 
 
 @admin.register(SprayPump)

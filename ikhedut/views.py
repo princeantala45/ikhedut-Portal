@@ -36,7 +36,7 @@ def marketprice(request):
         "quick_links": QuickLink.objects.all(),
     }
     return render(request,"marketprice.html",context)
-
+    
 @login_required
 def postadvertisement(request):
     context={
@@ -165,7 +165,6 @@ def index(request):
     }
     return render(request, "index.html", context)
     
-
 
 def agricultureguidance(request):
     context={
@@ -586,3 +585,226 @@ def api_my_orders(request):
     return Response(data)
 
                 
+                
+                
+# only for email login 
+
+import random
+import datetime
+
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
+from django.conf import settings
+from django.utils import timezone
+from django.utils.timezone import timedelta # pyright: ignore[reportAttributeAccessIssue]
+from django.template.loader import render_to_string
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+def send_otp_email(email, otp, is_resend=False):
+    """Helper function to send OTP emails"""
+    subject = f"{otp} is your {'new ' if is_resend else ''}verification code"
+    title = "Verify Your Identity" if not is_resend else "New OTP Requested"
+    color = "green" if not is_resend else "#0056b3" # Green for first, Blue for resend
+    
+    html_message = f"""
+<div style="margin:0; padding:0; background-color:#eef2f7; font-family:Segoe UI, Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 15px;">
+    <tr>
+      <td align="center">
+        
+        <table width="520" cellpadding="0" cellspacing="0" 
+               style="background:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+          
+          <!-- Top Accent Bar -->
+          <tr>
+            <td style="height:6px; background:{color};"></td>
+          </tr>
+
+          <!-- Logo -->
+          <tr>
+            <td align="center" style="padding:30px 30px 10px 30px;">
+              <img src="https://ikhedut-portal.onrender.com/static/img/header.png"
+                   alt="Ikhedut Portal"
+                   style="max-width:140px; height:auto;">
+            </td>
+          </tr>
+
+          <!-- Title -->
+          <tr>
+            <td align="center" style="padding:0 30px;">
+              <h2 style="margin:0; font-size:22px; color:#111827;">
+                Ikhedut Portal
+              </h2>
+              <p style="margin:8px 0 0 0; font-size:16px; color:{color}; font-weight:600;">
+                {title}
+              </p>
+            </td>
+          </tr>
+
+          <!-- Message -->
+          <tr>
+            <td align="center" style="padding:25px 40px 10px 40px;">
+              <p style="font-size:14px; color:#4b5563; line-height:1.6; margin:0;">
+                Enter the verification code below to continue. 
+                This code is valid for <strong>5 minutes</strong>.
+              </p>
+            </td>
+          </tr>
+
+          <!-- OTP Display -->
+          <tr>
+            <td align="center" style="padding:30px 0;">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="
+                      font-size:34px;
+                      font-weight:bold;
+                      letter-spacing:8px;
+                      padding:18px 30px;
+                      border-radius:10px;
+                      background:#f3f4f6;
+                      border:2px dashed {color};
+                      color:#111827;">
+                    {otp}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:0 40px;">
+              <hr style="border:none; border-top:1px solid #e5e7eb;">
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="padding:20px 40px 30px 40px;">
+              <p style="font-size:12px; color:#6b7280; margin:0;">
+                If you didn’t request this code, you can safely ignore this email.
+              </p>
+              <p style="font-size:11px; color:#9ca3af; margin-top:15px;">
+                © 2026 Ikhedut Portal. All rights reserved. Designed and Developed by PrinceAntala  
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</div>
+"""
+    send_mail(
+        subject,
+        strip_tags(html_message),
+        settings.EMAIL_HOST_USER,
+        [email],
+        html_message=html_message,
+        fail_silently=False,
+    )
+
+class RequestOTPView(APIView):
+    def post(self, request):
+        serializer = EmailSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email'] # type: ignore
+            otp = str(random.randint(100000, 999999))
+            
+            OTPRequest.objects.create(email=email, otp=otp) # pyright: ignore[reportUndefinedVariable]
+            send_otp_email(email, otp)
+            
+            return Response({"message": "OTP sent successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ResendOTPView(APIView):
+    def post(self, request):
+        serializer = EmailSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email'] # type: ignore
+            
+            # Rate Limiting: Check if last OTP was sent < 60 seconds ago
+            last_otp = OTPRequest.objects.filter(email=email).last()
+            if last_otp and timezone.now() < last_otp.created_at + timedelta(seconds=60):
+                return Response(
+                    {"error": "Please wait 60 seconds before requesting a new OTP."}, 
+                    status=status.HTTP_429_TOO_MANY_REQUESTS
+                )
+
+            # Generate and save new OTP
+            otp = str(random.randint(100000, 999999))
+            OTPRequest.objects.filter(email=email).delete() # type: ignore # Clear old ones
+            OTPRequest.objects.create(email=email, otp=otp)
+            
+            send_otp_email(email, otp, is_resend=True)
+            return Response({"message": "OTP resent successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import get_user_model, login
+
+User = get_user_model()
+
+class VerifyOTPView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        serializer = OTPVerifySerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        email = serializer.validated_data["email"] # type: ignore
+        entered_otp = serializer.validated_data["otp"] # type: ignore
+
+        # Get latest OTP record
+        otp_record = OTPRequest.objects.filter(email=email).order_by("-created_at").first()
+
+        if not otp_record:
+            return Response({"error": "No OTP found"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check expiry (assuming you have is_valid() method)
+        if not otp_record.is_valid():
+            otp_record.delete()
+            return Response({"error": "OTP expired"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check OTP match
+        if otp_record.otp != entered_otp:
+            return Response({"error": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get user
+        user = User.objects.filter(email=email).first()
+        if not user:
+            return Response({"error": "User not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Delete OTP after successful verification
+        otp_record.delete()
+
+        # ✅ Create Django session login (IMPORTANT FIX)
+        login(request, user)
+
+        # ✅ Generate JWT tokens
+        refresh = RefreshToken.for_user(user)
+        access_token = refresh.access_token
+
+        return Response(
+            {
+                "message": "Login successful",
+                "access": str(access_token),
+                "refresh": str(refresh),
+                "access_expires": access_token["exp"],
+                "username": user.username, # type: ignore
+            },
+            status=status.HTTP_200_OK,
+        )
