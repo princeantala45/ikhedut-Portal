@@ -17,7 +17,6 @@ ALLOWED_HOSTS = [
     "ikhedut-portal.onrender.com",
     "127.0.0.1",
     "localhost",
-    "ikhedut-portal-latest.onrender.com"
 ]
 
 INSTALLED_APPS = [
@@ -243,25 +242,20 @@ LOGIN_URL = "login"
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
 
-# # EMAIL_HOST_USER = 'infoikhedutportal@gmail.com'
-# # EMAIL_HOST_PASSWORD = 'ygdg unzo sxik pely'
+# EMAIL_HOST_USER = 'infoikhedutportal@gmail.com'
+# EMAIL_HOST_PASSWORD = 'ygdg unzo sxik pely'
 
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
+import os
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+
+EMAIL_HOST = "smtp.sendgrid.net"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = "apikey"
+EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_API_KEY")
 
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://ikhedut-portal.onrender.com",
-]
+DEFAULT_FROM_EMAIL = "infoikhedutportal@gmail.com"
