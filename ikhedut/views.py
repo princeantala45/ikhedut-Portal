@@ -516,8 +516,8 @@ def api_my_cart(request):
 def api_remove_cart_item(request, item_id):
     item = get_object_or_404(Cartitems, id=item_id, cart__user=request.user)
 
-    item.product.quantity += item.quantity
-    item.product.save()
+    item.product.quantity += item.quantity # type: ignore 
+    item.product.save() # type: ignore 
 
     item.delete()
     return Response({"success": True})
