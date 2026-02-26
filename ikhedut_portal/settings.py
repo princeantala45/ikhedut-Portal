@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get(
     "1b604c7567ae32d0bf02685eb94bb43e"
 )
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     "ikhedut-portal.onrender.com",
@@ -261,3 +261,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://ikhedut-portal.onrender.com",
+]
