@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% comment %} 
 {% block title %}User Login{% endblock title %}
 
 {% block content %}
@@ -317,6 +318,165 @@
         localStorage.clear();
         window.location.href = "/login/";
     }
+    setupAutoLogout();
+</script>
+
+{% endblock content %} {% endcomment %}
+
+
+{% comment %} {% extends "base.html" %} {% endcomment %}
+{% block title %}User Login{% endblock title %}
+
+{% block content %}
+<div class="flex items-start sm:items-center justify-center bg-gray-100 px-4 pt-4 pb-4 sm:py-0">
+    <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-5 sm:p-8" style="margin-top: 50px;">
+        <h2 class="text-2xl font-semibold text-green-700 text-center mb-6">
+            Welcome to ikhedut-Portal
+        </h2>
+
+        <div class="flex mb-8 border-b border-gray-100">
+            <button id="tab-pass" onclick="switchTab('pass')"
+                class="w-1/2 pb-2 text-sm font-semibold text-green-700 border-b-2 border-green-700 transition-all">
+                Password
+            </button>
+            <button id="tab-otp" onclick="switchTab('otp')"
+                class="w-1/2 pb-2 text-sm font-semibold text-gray-400 border-b-2 border-transparent transition-all">
+                Email OTP
+            </button>
+        </div>
+
+        <!-- PASSWORD LOGIN -->
+        <form id="login-form" class="space-y-5" autocomplete="off">
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Username</label>
+                <input id="username" type="text" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Password</label>
+                <input id="password" type="password" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            </div>
+            <div class="pt-4 flex justify-center lg:justify-start">
+        <button type="submit" class="cssbuttons-io-button">
+          Login
+          <div class="icon">
+            <svg height="24" width="24" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                fill="currentColor">
+              </path>
+            </svg>
+          </div>
+        </button>
+      </div>
+        </form>
+
+        <!-- OTP FORM (kept but disabled by popup) -->
+        <form id="otp-form" class="hidden"></form>
+
+        <div class="mt-8 border-t border-gray-50 pt-4">
+            <p class="text-sm text-center text-gray-600">
+                Don’t have an account?
+                <a href="/signup" class="text-green-600 hover:text-green-700 font-medium">Sign up</a>
+            </p>
+            <p class="text-sm text-center text-gray-600 mt-2">
+                <a href="{% url 'password_reset' %}" class="text-green-600 hover:text-green-700 font-medium">
+                    Forgot Password
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    /* TAB SWITCH */
+    function switchTab(type) {
+        if (type === 'otp') {
+            Swal.fire(
+                "Coming Soon",
+                "This service will be available soon.",
+                "info"
+            );
+            return;
+        }
+    }
+
+    /* CSRF */
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrfToken = getCookie("csrftoken");
+
+    /* HANDLE LOGIN RESPONSE */
+    function handleAuthResponse(data) {
+        if (data.access) {
+            localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
+            localStorage.setItem("access_expires", data.access_expires);
+
+            Swal.fire("Welcome!", "Login successful.", "success")
+                .then(() => window.location.href = "/");
+        } else {
+            Swal.fire("Login Failed", data.error || "Invalid credentials.", "error");
+        }
+    }
+
+    /* PASSWORD LOGIN */
+    document.getElementById("login-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        fetch("/login_api/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value
+            })
+        })
+        .then(res => res.json())
+        .then(handleAuthResponse)
+        .catch(() => {
+            Swal.fire("Error", "Something went wrong.", "error");
+        });
+    });
+
+    /* AUTO LOGOUT */
+    function setupAutoLogout() {
+        const exp = localStorage.getItem("access_expires");
+        if (!exp) return;
+
+        const timeLeft = (parseInt(exp) * 1000) - Date.now();
+        if (timeLeft <= 0) {
+            forceLogout();
+            return;
+        }
+
+        setTimeout(forceLogout, timeLeft);
+    }
+
+    function forceLogout() {
+        localStorage.clear();
+        window.location.href = "/login/";
+    }
+
     setupAutoLogout();
 </script>
 

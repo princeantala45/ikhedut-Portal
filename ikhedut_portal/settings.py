@@ -12,7 +12,7 @@ SECRET_KEY = os.environ.get(
 )
 
 # DEBUG = os.environ.get("DEBUG", "False") == "True"
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "ikhedut-portal.onrender.com",
@@ -21,8 +21,8 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
-    # "jazzmin",
-    'unfold',
+    "jazzmin",
+    # 'unfold',
     "rest_framework", 
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
@@ -146,6 +146,36 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ------------- this is only for django admin panel UI change --------------------
 
+# UNFOLD = {
+#     "SITE_TITLE": "IKhedut Portal Admin Panel",
+#     "SITE_HEADER": "Ikhedut Portal",
+#     "SITE_SYMBOL": "Ikhedut Portal",
+
+#     "SITE_ICON": {
+#         "light": lambda request: "/static/img/favicon.png",
+#         "dark": lambda request: "/static/img/favicon.png",
+#     },
+
+#     "SITE_LOGO": {
+#         "light": lambda request: "/static/img/header.png",
+#         "dark": lambda request: "/static/img/header.png",
+#     },
+
+#     "COLORS": {
+# "primary": {
+#     "50": "254 242 242",   # Very Light Red (Rose Mist)
+#     "100": "254 226 226",  # Light Red
+#     "200": "254 202 202",  # Soft Red
+#     "300": "252 165 165",  # Light Medium Red
+#     "400": "248 113 113",  # Medium Red
+#     "500": "239 68 68",    # Red (Main Brand Color)
+#     "600": "220 38 38",    # Dark Red
+#     "700": "185 28 28",    # Deeper Red
+#     "800": "153 27 27",    # Very Dark Red
+#     "900": "127 29 29",    # Deep Red (Almost Maroon)
+# },
+#     },
+# }
 JAZZMIN_SETTINGS = {
     "site_title": "Admin Panel",
     "site_header": "My Project",    
