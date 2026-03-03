@@ -12,7 +12,7 @@ SECRET_KEY = os.environ.get(
 )
 
 # DEBUG = os.environ.get("DEBUG", "False") == "True"
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "ikhedut-portal.onrender.com",
@@ -142,7 +142,9 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+if not DEBUG:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ------------- this is only for django admin panel UI change --------------------
 
