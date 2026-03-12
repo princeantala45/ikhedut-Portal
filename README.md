@@ -98,16 +98,6 @@ The interface focuses on **clarity, simplicity, and usability** so that even non
 
 ---
 
-# 📸 Project Preview
-
-<p align="center">
-
-<img src="https://media.giphy.com/media/QssGEmpkyEOhBCb7e1/giphy.gif" width="700">
-
-</p>
-
----
-
 # 🤝 Contribution
 
 Developers are welcome to contribute and improve the project.
