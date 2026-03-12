@@ -5,110 +5,133 @@
 
 ---
 
-# 🌾 iKhedut Portal
+<h1 align="center">🌾 iKhedut Portal</h1>
 
 <p align="center">
-
-<img src="https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python">
-<img src="https://img.shields.io/badge/Django-Web%20Framework-green?style=for-the-badge&logo=django">
-<img src="https://img.shields.io/badge/HTML5-Frontend-orange?style=for-the-badge&logo=html5">
-<img src="https://img.shields.io/badge/CSS3-Styling-blue?style=for-the-badge&logo=css3">
-<img src="https://img.shields.io/badge/JavaScript-Interactive-yellow?style=for-the-badge&logo=javascript">
-<img src="https://img.shields.io/badge/Deployment-Render-purple?style=for-the-badge">
-
-</p>
-
-<p align="center">
-A web-based platform inspired by the Gujarat Government iKhedut system that helps farmers access agriculture schemes and services through a simple and user-friendly digital portal.
+A modern web platform inspired by the Gujarat Government iKhedut system that helps farmers easily explore agricultural schemes and services online.
 </p>
 
 ---
 
 # 🚀 Live Portal
 
-🌐 https://ikhedut-portal.onrender.com/
+<p align="center">
 
----
+🌐 **https://ikhedut-portal.onrender.com/**
 
-# 🌱 About The Project
-
-The **iKhedut Portal** is designed to provide farmers with easy access to information about government agriculture schemes and farming support programs.
-
-The portal demonstrates how digital platforms can improve accessibility to government services by allowing farmers to explore schemes, read detailed information, and interact with services online.
-
-The system focuses on creating a **simple, responsive, and farmer-friendly interface** that works across mobile phones, tablets, and desktop devices.
-
-This project is built using the **Django web framework**, providing a secure and scalable backend for managing web applications.
+</p>
 
 ---
 
 # ✨ Key Features
 
-🌾 Easy access to agriculture schemes  
-📄 Detailed information about farming programs  
-📝 Simple scheme application interface  
-📱 Mobile-friendly responsive design  
-⚡ Fast and lightweight web pages  
-🔒 Secure backend powered by Django  
-🎯 Clean and intuitive navigation  
-🌍 Accessible online from any device
+<table>
+<tr>
+<td>🌾</td>
+<td><b>Farmer Friendly Interface</b><br>Simple design that farmers can easily navigate.</td>
+</tr>
+
+<tr>
+<td>📄</td>
+<td><b>Agriculture Scheme Information</b><br>Provides details about available government schemes.</td>
+</tr>
+
+<tr>
+<td>📝</td>
+<td><b>Online Application Interface</b><br>Farmers can easily interact with scheme application forms.</td>
+</tr>
+
+<tr>
+<td>📱</td>
+<td><b>Responsive Design</b><br>Works smoothly on mobile, tablet, and desktop devices.</td>
+</tr>
+
+<tr>
+<td>⚡</td>
+<td><b>Fast Performance</b><br>Optimized pages for quick loading.</td>
+</tr>
+
+<tr>
+<td>🔒</td>
+<td><b>Secure Backend</b><br>Powered by Django for reliable and secure operations.</td>
+</tr>
+
+</table>
 
 ---
 
-# 🛠 Technologies Used
+# 🛠 Technology Stack
 
-### Backend
-- Python  
-- Django  
+<p align="center">
 
-### Frontend
-- HTML5  
-- CSS3  
-- JavaScript  
-- Bootstrap  
+<img src="https://img.shields.io/badge/Python-Backend-blue?style=for-the-badge&logo=python">
+<img src="https://img.shields.io/badge/Django-Web%20Framework-green?style=for-the-badge&logo=django">
+<img src="https://img.shields.io/badge/HTML5-Frontend-orange?style=for-the-badge&logo=html5">
+<img src="https://img.shields.io/badge/CSS3-Styling-blue?style=for-the-badge&logo=css3">
+<img src="https://img.shields.io/badge/JavaScript-Interactive-yellow?style=for-the-badge&logo=javascript">
+<img src="https://img.shields.io/badge/Bootstrap-UI-purple?style=for-the-badge&logo=bootstrap">
+<img src="https://img.shields.io/badge/SQLite-Database-lightgrey?style=for-the-badge&logo=sqlite">
 
-### Database
-- SQLite  
+</p>
 
-### Deployment
-- Render Cloud Platform  
+---
 
-### Version Control
-- Git  
-- GitHub  
+# 🌱 Purpose of the Project
+
+The goal of this project is to demonstrate how digital platforms can improve accessibility to agricultural services.
+
+The portal helps in:
+
+- simplifying access to farming schemes  
+- improving accessibility for rural users  
+- demonstrating full-stack web development with Django  
+- creating a clean and user-friendly government service interface  
+
+---
+
+# 🌍 Accessibility
+
+The platform is designed to be accessible from anywhere using an internet connection.  
+Farmers can easily browse available schemes, read information, and interact with the portal without complicated processes.
+
+The interface focuses on **clarity, simplicity, and usability** so that even non-technical users can navigate it comfortably.
 
 ---
 
 # 📸 Project Preview
 
 <p align="center">
+
 <img src="https://media.giphy.com/media/QssGEmpkyEOhBCb7e1/giphy.gif" width="700">
+
 </p>
 
 ---
 
 # 🤝 Contribution
 
-Contributions are welcome for improving this project.
+Developers are welcome to contribute and improve the project.
 
-Possible enhancements may include:
+Possible enhancements include:
 
 - improving UI/UX design  
-- adding authentication system  
-- integrating additional agriculture schemes  
-- connecting external agriculture APIs  
-- enhancing farmer dashboard features  
+- adding more scheme categories  
+- implementing authentication system  
+- integrating external agriculture APIs  
+- improving mobile optimization  
 
 ---
 
-# 🌟 Support
+# ⭐ Support
 
-If you find this project useful, consider giving it a ⭐ on GitHub.
+If you like this project, consider giving it a ⭐ on GitHub.  
+Your support encourages further improvements and development.
 
 ---
 
 # 📜 Disclaimer
 
-This project is created for **educational and demonstration purposes only** and is **not affiliated with the official iKhedut portal of the Government of Gujarat**.
+This project is created for **educational and demonstration purposes only**.  
+It is not affiliated with the official Government iKhedut portal.
 
 ---
